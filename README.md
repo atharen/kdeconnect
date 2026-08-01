@@ -104,6 +104,13 @@ Restore to standard install with `just install`.
 just uninstall
 ```
 
+## Architecture decisions
+
+Significant project and architecture decisions are recorded in
+[`docs/adr`](docs/adr/README.md). The initial record describes the fork's
+Apple- and Android-focused direction, planned portable-core restructure, and
+best-effort Linux support policy.
+
 ---
 
 ## Building as Flatpak
