@@ -21,7 +21,7 @@ futures-util = { workspace = true }
 kdeconnect-core = { workspace = true }
 dirs = { workspace = true }
 ron = { workspace = true }
-kdeconnect-varlink = { path = "../kdeconnect-varlink" }
+kdeconnect-varlink = { path = "../../../platform/linux/kdeconnect-varlink" }
 varlink = { workspace = true }
 async-trait = { workspace = true }
 tracing-appender = { workspace = true }

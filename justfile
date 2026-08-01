@@ -3,6 +3,7 @@
 APPID      := "io.github.hepp3n.kdeconnect"
 PREFIX     := env_var("HOME") / ".local"
 XDG_CONFIG := env_var_or_default("XDG_CONFIG_HOME", env_var("HOME") / ".config")
+APP_RESOURCES := "apps/linux/cosmic-ext-connect-applet/resources"
 
 # Build everything
 build:
@@ -35,15 +36,15 @@ install-bins: build
 
 # Install applet desktop entry, icon, and metainfo
 install-applet-desktop:
-    install -Dm644 resources/{{APPID}}.svg           {{PREFIX}}/share/icons/hicolor/scalable/apps/{{APPID}}.svg
-    install -Dm644 resources/{{APPID}}.metainfo.xml  {{PREFIX}}/share/metainfo/{{APPID}}.metainfo.xml
+    install -Dm644 {{APP_RESOURCES}}/{{APPID}}.svg           {{PREFIX}}/share/icons/hicolor/scalable/apps/{{APPID}}.svg
+    install -Dm644 {{APP_RESOURCES}}/{{APPID}}.metainfo.xml  {{PREFIX}}/share/metainfo/{{APPID}}.metainfo.xml
     mkdir -p {{PREFIX}}/share/applications
     sed 's|Exec=cosmic-ext-connect-applet|Exec={{PREFIX}}/bin/cosmic-ext-connect-applet|' \
-        resources/{{APPID}}.desktop \
+        {{APP_RESOURCES}}/{{APPID}}.desktop \
         > {{PREFIX}}/share/applications/{{APPID}}.desktop
-    install -Dm644 resources/{{APPID}}.settings.desktop \
+    install -Dm644 {{APP_RESOURCES}}/{{APPID}}.settings.desktop \
         {{PREFIX}}/share/applications/{{APPID}}.settings.desktop
-    install -Dm644 resources/{{APPID}}.sms.desktop \
+    install -Dm644 {{APP_RESOURCES}}/{{APPID}}.sms.desktop \
         {{PREFIX}}/share/applications/{{APPID}}.sms.desktop
 
 # Write D-Bus activation file with correct full path
@@ -55,11 +56,11 @@ install-dbus-service:
 # Install XDG autostart entry
 install-autostart:
     mkdir -p {{XDG_CONFIG}}/autostart
-    sed 's|Exec=kdeconnect-service|Exec={{PREFIX}}/bin/kdeconnect-service|'         resources/{{APPID}}.daemon.desktop         > {{XDG_CONFIG}}/autostart/{{APPID}}.daemon.desktop
+    sed 's|Exec=kdeconnect-service|Exec={{PREFIX}}/bin/kdeconnect-service|'         {{APP_RESOURCES}}/{{APPID}}.daemon.desktop         > {{XDG_CONFIG}}/autostart/{{APPID}}.daemon.desktop
 
 # Install systemd user service (optional — enables journalctl logging and systemctl control)
 install-systemd-service:
-    install -Dm644 kdeconnect-service/kdeconnect.service {{XDG_CONFIG}}/systemd/user/kdeconnect.service
+    install -Dm644 apps/linux/kdeconnect-service/kdeconnect.service {{XDG_CONFIG}}/systemd/user/kdeconnect.service
     systemctl --user daemon-reload
 
 # Install with systemd service instead of dbus service
